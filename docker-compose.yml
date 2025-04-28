@@ -1,0 +1,27 @@
+services:
+
+  tasks-service:
+    build:
+      context: ./tasks-service
+      dockerfile: Dockerfile
+    ports:
+      - "5001:5001"
+
+  user-service:
+    build:
+      context: ./user-service
+      dockerfile: Dockerfile
+    ports:
+      - "5002:5002"
+
+  webapp:
+    build:
+      context: ./webapp
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    depends_on:
+      - tasks-service
+      - user-service
+    volumes:
+      - ./webapp:/app
