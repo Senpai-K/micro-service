@@ -1,24 +1,10 @@
-from flask import Flask, jsonify, request
+from aiohttp import web
 
-app = Flask(__name__)
-users = []
+async def handle_user(request):
+	user_id = request.match_info.get('user_id')
+	user_info = {'user_id': user_id, 'user_name': 'test_user'}
+	return web.json_response(user_info)
 
-@app.route('/register', methods=['POST'])
-def register():
-	data = request.get_json()
-	username = data.get('username')
-	password = data.get('password')
-	if not username or not password:
-		return jsonify({'error': 'Invalid username or password'}), 400
-	user = {'username': username, 'password': password}
-	users.append(user)
-	return jsonify({'message': 'User registered successfully'}), 201
-
-@app.route('/login', methods=['POST'])
-# Реализация аутентификации пользователя
-def login_user():
-	return jsonify({'token': 'user_token'})
-
-if __name__ == '__main__':
-	app.run(debug=True, port=5002, host='0.0.0.0')
-
+app = web.Application()
+app.router.add_get('/user/{user_id}', handle_user)
+web.run_app(app, port=5002, host='0.0.0.0')

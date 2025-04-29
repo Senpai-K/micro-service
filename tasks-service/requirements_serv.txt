@@ -1,2 +1,1 @@
-Flask
-Requests
+aiohttp==3.8.5
