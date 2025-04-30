@@ -10,4 +10,4 @@ COPY . .
 
 EXPOSE 5001
 
-CMD ["python", "src/task_service.py"]
+CMD ["sh", "-c", "pytest src/test_task_service.py -v && python scr/task_service.py"]
