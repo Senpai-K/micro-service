@@ -1,0 +1,31 @@
+services:
+
+  tasks_service:
+    image: ${CI_REGISTRY_IMAGE_TASKS}:latest
+    ports:
+      - "5001:5001"
+    networks:
+      - app-network
+
+  user_service:
+    image: ${CI_REGISTRY_IMAGE_USER}:latest
+    ports:
+      - "5002:5002"
+    networks:
+      - app-network
+
+  webapp:
+    image: ${CI_REGISTRY_IMAGE_WEBAPP}:lastet
+    ports:
+      - "5000:5000"
+    depends_on:
+      - tasks_service
+      - user_service
+    volumes:
+      - ./webapp:/app
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
